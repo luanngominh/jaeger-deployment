@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  jaeger-collector:
+  jaeger-collector-01:
     image: jaegertracing/jaeger-opentelemetry-collector:latest
-    container_name: "jaeger_collector"
+    container_name: "jaeger_collector_01"
     restart: always
     environment:
       SPAN_STORAGE_TYPE: elasticsearch
@@ -14,11 +14,24 @@ services:
       # Admin and healthz
       - 14269:14269
 
+  jaeger-collector-02:
+    image: jaegertracing/jaeger-opentelemetry-collector:latest
+    container_name: "jaeger_collector_02"
+    restart: always
+    environment:
+      SPAN_STORAGE_TYPE: elasticsearch
+      ES_SERVER_URLS: http://elastic:elastic@host.docker.internal:9200
+    ports:
+      # Used by jaeger-agent to send spans in model.proto format
+      - 14251:14250
+      # Admin and healthz
+      - 14261:14269
+
   jaeger-agent:
     image: jaegertracing/jaeger-opentelemetry-agent:latest
     container_name: "jaeger_agent"
     restart: always
-    command: ["--reporter.grpc.host-port=jaeger-collector:14250"]
+    command: ["--reporter.grpc.host-port=jaeger-collector-01:14250,jaeger-collector-02:14250"]
     ports:
       - 5775:5775/udp
       - 6831:6831/udp
