@@ -39,7 +39,7 @@ services:
       - 5778:5778/tcp
 
   jaeger-query:
-    image: jaegertracing/jaeger-agent:latest
+    image: jaegertracing/jaeger-query:latest
     container_name: "jaeger_query"
     restart: always
     environment:
