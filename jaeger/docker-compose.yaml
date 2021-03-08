@@ -11,6 +11,8 @@ services:
     ports:
       # Used by jaeger-agent to send spans in model.proto format
       - 14250:14250
+      # Jaeger Thrift format
+      - 14268:14268
       # Admin and healthz
       - 14269:14269
 
@@ -24,6 +26,8 @@ services:
     ports:
       # Used by jaeger-agent to send spans in model.proto format
       - 14251:14250
+      # Jaeger Thrift format
+      - 14221:14268
       # Admin and healthz
       - 14261:14269
 
